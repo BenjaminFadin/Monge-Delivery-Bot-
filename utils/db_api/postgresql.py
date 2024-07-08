@@ -37,18 +37,7 @@ class Database:
                 elif execute:
                     result = await connection.execute(command, *args)
             return result
-
-    # async def create_table_users(self):
-    #     sql = """
-    #         CREATE TABLE IF NOT EXISTS users_user (
-    #         id SERIAL PRIMARY KEY,
-    #         full_name VARCHAR(255) NOT NULL,
-    #         username VARCHAR(255) NOT NULL,
-    #         telegram_id BIGINT NOT NULL UNIQUE
-    #         );
-    #     """
-    #     await self.execute(sql, execute=True)
-
+    
     @staticmethod
     def format_args(sql, parameters: dict):
         sql += " AND ".join([
@@ -73,7 +62,7 @@ class Database:
         )
 
     async def select_all_users(self):
-        sql = "SELECT * FROM users_user"
+        sql = "SELECT * FROM Users_user"
         return await self.execute(sql, fetch=True)
 
     async def select_user(self, **kwargs):
@@ -81,13 +70,28 @@ class Database:
         sql, parameters = self.format_args(sql, parameters=kwargs)
         return await self.execute(sql, *parameters, fetchrow=True)
 
-    async def count_users(self):
-        sql = "SELECT COUNT(*) FROM users_user"
-        return await self.execute(sql, fetchval=True)
+    async def select_specific_user(self, telegram_id): 
+        sql = "SELECT * FROM Users_user WHERE telegram_id = $1 AND is_courier = $2"
+        return await self.execute(sql, telegram_id, True, fetchrow=True)
 
-    async def update_user_username(self, username, telegram_id):
-        sql = "UPDATE users_user SET username=$1 WHERE telegram_id=$2"
-        return await self.execute(sql, username, telegram_id, execute=True)
+    async def getOrders(self):
+        sql = "SELECT * FROM delivery_order"
+        return await self.execute(sql, fetch=True)
+
+    async def get_orders_by_telegram_id(self, telegram_id):
+        sql = """
+        SELECT o.*, u.*, p.*, oi.*
+        FROM delivery_order AS o
+        JOIN users_user AS u ON o.customer_id = u.id
+        JOIN orderitem AS oi ON o.id = oi.order_id
+        JOIN product AS p ON oi.product_id = p.id
+        WHERE u.telegram_id = $1
+        """
+        return await self.execute(sql, telegram_id, fetch=True)
+    
+    # async def count_users(self):
+    #     sql = "SELECT COUNT(*) FROM users_user"
+    #     return await self.execute(sql, fetchval=True)
 
     async def update_user_language(self, language, telegram_id):
         sql = "UPDATE users_user SET language=$1 WHERE telegram_id=$2"
@@ -101,8 +105,9 @@ class Database:
         sql = "UPDATE users_user SET phone_number=$1 WHERE telegram_id=$2"
         return await self.execute(sql, phone_number, telegram_id, execute=True)
 
-    async def delete_users(self):
-        await self.execute("DELETE FROM users_user WHERE TRUE", execute=True)
+    # async def delete_users(self):
+    #     await self.execute("DELETE FROM users_user WHERE TRUE", execute=True)
 
-    async def drop_users(self):
-        await self.execute("DROP TABLE users_user", execute=True)
+    # async def drop_users(self):
+    #     await self.execute("DROP TABLE users_user", execute=True)
+

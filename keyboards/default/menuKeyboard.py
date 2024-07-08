@@ -32,17 +32,10 @@ def get_phone_number_button(lang):
 
 
 def get_main_menu_keyboard(lang):
-    rkm = ReplyKeyboardMarkup(True, row_width=2)
-    btn = KeyboardButton(naming.ORDER[lang], web_app=WebAppInfo(url=WEB_APP_URL))
-    sale_btn = KeyboardButton(naming.SALE[lang])
-    comment_btn = KeyboardButton(naming.COMMENT[lang], web_app=WebAppInfo(url=WEB_APP_URL))
-    # Добавление кнопки к клавиатуре
-    rkm.add(btn)
-    rkm.add(sale_btn, comment_btn)
-    # rkm.add(comment_btn)
-
+    rkm = ReplyKeyboardMarkup(True, row_width=1)
     rkm.add(*(KeyboardButton(btn[lang]) for btn in naming.MAIN_MENU_KEYBOARD))
     return rkm
 
 
 remove_kb = ReplyKeyboardRemove()
+

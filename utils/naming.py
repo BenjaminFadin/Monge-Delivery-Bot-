@@ -63,8 +63,8 @@ help_messages = {
     'eng': ("Commands: ",
             "/start - Start the bot",
             "/help - Help")
-
 }
+
 
 BIRTH_DATE_MSG = {
     'uz': "Iltimos tug'ilgan kuningizni kiriting\n Quyidagi formatda: (dd.mm.yyyy)",
@@ -72,11 +72,19 @@ BIRTH_DATE_MSG = {
     'en': "Please enter your date of birth\n in the following format: (dd.mm.yyyy)"
 }
 
-ORDER = {
-    'uz': "🛍 Buyurtma berish",
-    'ru': "🛍 Заказать",
-    'en': "🛍 Order"
+
+ORDERS = {
+    'uz': "🛍 Buyurtmalar",
+    'ru': "🛍 Заказы",
+    'en': "🛍 Orders"
 }
+
+MY_ORDERS = {
+    'uz': "🛍 Buyurtmalarim",
+    'ru': "🛍 Мои заказы",
+    'en': "🛍 My orders"
+}
+
 
 SALE = {
     "uz": "🎉 Aksiya",
@@ -109,7 +117,7 @@ CURR_ORDERS = {
 }
 
 MAIN_MENU_KEYBOARD = (
-    SETTINGS, CURR_ORDERS
+    ORDERS, CURR_ORDERS, SETTINGS, 
 )
 
 # Settings

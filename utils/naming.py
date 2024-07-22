@@ -145,9 +145,38 @@ SETTINGS_KEYBOARD = (
 )
 
 
-# Despite use: BIRTH_DATE_MSG
+courier = {
+    "uz": "Kuryer",
+    "ru": "Курьер",
+    "en": "Courier"
+}
 
-# Change phone number
-# Add birth_date
-# Cancel
+order_status = {
+    "uz": "Holati",
+    "ru": "Статус",
+    "en": "Delivery status"
+}
 
+client = {
+    'uz': "Mijoz",
+    "ru": "Клиент",
+    "en": "Client"
+}
+
+quantity = {
+    "uz": "Miqdori",
+    "ru": "Количество",
+    "en": "Quantity"
+}
+
+price = {
+    "uz": "Narxi",
+    "ru": "Цена",
+    "en": "Price"
+}
+
+order_id = {
+    'uz': "Buyurtma raqami",
+    "ru": 'Номер заказа',
+    'en': 'Order number'
+}

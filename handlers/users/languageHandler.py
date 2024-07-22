@@ -14,9 +14,7 @@ async def languageHandler(message: types.Message, state: FSMContext):
     if msg in naming.languages:
         await state.update_data({'language': naming.languages[msg]})
         user_data = await state.get_data()
-        user_lang = user_data['language']
         await PersonalData.fullname.set()
-        # await message.answer(naming.accept_msg[user_lang])
         await message.answer(naming.language_response[msg], reply_markup=remove_kb)
 
     else:

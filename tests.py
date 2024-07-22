@@ -53,13 +53,18 @@ async def main():
     )
     
     query = await conn.fetch("""
-        SELECT *
-        FROM delivery_order AS o
+        SELECT 
+            o.payment_status as "Status",
+            o.courier_id as "Courier",
+            u.first_name as "Customer",
+            p.title as "Name",
+            oi.quantity as "Quantity",
+            oi.unit_price as "Price"
+        FROM delivery_order o
         JOIN users_user AS u ON o.recipient_id = u.id
         JOIN delivery_orderitem AS oi ON o.id = oi.order_id
         JOIN delivery_product AS p ON oi.product_id = p.id
-        WHERE u.telegram_id = $1
-    """, 995991268
+    """,
     )
 
     row_dicts = [dict(row) for row in query]

@@ -64,6 +64,22 @@ class Database:
     async def select_all_users(self):
         sql = "SELECT * FROM Users_user"
         return await self.execute(sql, fetch=True)
+    
+    async def getOrders(self):
+        sql = """SELECT
+                    o.id,
+                    o.payment_status as "Status",
+                    o.courier_id as "Courier",
+                    u.first_name as "Customer",
+                    p.title as "Name",
+                    oi.quantity as "Quantity",
+                    oi.unit_price as "Price"
+                FROM delivery_order o
+                JOIN users_user AS u ON o.recipient_id = u.id
+                JOIN delivery_cart AS dc on u.id = c.user_id
+                JOIN delivery_orderitem AS oi ON o.id = oi.order_id
+                JOIN delivery_product AS p ON oi.product_id = p.id"""
+        return await self.execute(sql, fetch=True)
 
     async def select_user(self, **kwargs):
         sql = "SELECT * FROM Users_user WHERE "
@@ -74,9 +90,6 @@ class Database:
         sql = "SELECT * FROM Users_user WHERE telegram_id = $1 AND is_courier = $2"
         return await self.execute(sql, telegram_id, True, fetchrow=True)
 
-    async def getOrders(self):
-        sql = "SELECT * FROM delivery_order"
-        return await self.execute(sql, fetch=True)
 
     async def get_orders_by_telegram_id(self, telegram_id):
         sql = """
@@ -89,10 +102,6 @@ class Database:
         """
         return await self.execute(sql, telegram_id, fetch=True)
     
-    # async def count_users(self):
-    #     sql = "SELECT COUNT(*) FROM users_user"
-    #     return await self.execute(sql, fetchval=True)
-
     async def update_user_language(self, language, telegram_id):
         sql = "UPDATE users_user SET language=$1 WHERE telegram_id=$2"
         return await self.execute(sql, language, telegram_id, execute=True)
@@ -104,10 +113,3 @@ class Database:
     async def update_user_phone_number(self, phone_number, telegram_id):
         sql = "UPDATE users_user SET phone_number=$1 WHERE telegram_id=$2"
         return await self.execute(sql, phone_number, telegram_id, execute=True)
-
-    # async def delete_users(self):
-    #     await self.execute("DELETE FROM users_user WHERE TRUE", execute=True)
-
-    # async def drop_users(self):
-    #     await self.execute("DROP TABLE users_user", execute=True)
-
